@@ -23,11 +23,7 @@ class ProfileTab extends StatelessWidget {
             const SizedBox(height: 16),
             _buildEditButton(),
             const SizedBox(height: 32),
-            const Divider(color: _border, thickness: 1, indent: 24, endIndent: 24),
-            const SizedBox(height: 8),
             _buildMenuItems(),
-            const SizedBox(height: 8),
-            const Divider(color: _border, thickness: 1, indent: 24, endIndent: 24),
             const SizedBox(height: 24),
             _buildLogOutButton(),
             const SizedBox(height: 32),
@@ -53,11 +49,13 @@ class ProfileTab extends StatelessWidget {
       width: 120,
       height: 120,
       decoration: BoxDecoration(
-        color: const Color(0xFFD1FAE5),
         shape: BoxShape.circle,
         border: Border.all(color: _primary.withAlpha(60), width: 2),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/profile.jpg'),
+          fit: BoxFit.cover,
+        ),
       ),
-      child: const Icon(Icons.person, size: 64, color: _primary),
     );
   }
 
@@ -82,19 +80,25 @@ class ProfileTab extends StatelessWidget {
   }
 
   Widget _buildEditButton() {
-    return OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        foregroundColor: _primary,
-        side: const BorderSide(color: _primary),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: SizedBox(
+        width: double.infinity,
+        child: OutlinedButton(
+          onPressed: () {},
+          style: OutlinedButton.styleFrom(
+            foregroundColor: _primary,
+            side: const BorderSide(color: _primary),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          child: const Text(
+            'Edit Profile',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      ),
-      child: const Text(
-        'Edit Profile',
-        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -115,19 +119,26 @@ class ProfileTab extends StatelessWidget {
   }
 
   Widget _buildLogOutButton() {
-    return TextButton(
-      onPressed: () {},
-      style: TextButton.styleFrom(
-        backgroundColor: const Color(0xFFF3F4F6),
-        foregroundColor: const Color(0xFFDC2626),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFDC2626),
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          child: const Text(
+            'Log Out',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
-      ),
-      child: const Text(
-        'Log Out',
-        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
       ),
     );
   }
