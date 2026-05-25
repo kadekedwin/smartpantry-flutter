@@ -30,8 +30,6 @@ class ProfileTab extends StatelessWidget {
             const Divider(color: _border, thickness: 1, indent: 24, endIndent: 24),
             const SizedBox(height: 24),
             _buildLogOutButton(),
-            const SizedBox(height: 16),
-            _buildVersion(),
             const SizedBox(height: 32),
           ],
         ),
@@ -134,12 +132,6 @@ class ProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildVersion() {
-    return const Text(
-      'ver 1.0',
-      style: TextStyle(fontSize: 12, color: _muted),
-    );
-  }
 }
 
 class _MenuItem extends StatelessWidget {
