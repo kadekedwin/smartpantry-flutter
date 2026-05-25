@@ -9,7 +9,7 @@ class NotificationTab extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: Text(
-          'Notifikasi',
+          'TESTTT',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
