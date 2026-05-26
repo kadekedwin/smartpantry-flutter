@@ -3,175 +3,310 @@ import 'package:flutter/material.dart';
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
 
-  static const _primary = Color(0xFF059669);
+  static const _green = Color(0xFF0F9F68);
   static const _foreground = Color(0xFF111827);
   static const _muted = Color(0xFF6B7280);
   static const _border = Color(0xFFE5E7EB);
+  static const _bg = Color(0xFFF9FAFB);
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
+    return Scaffold(
+      backgroundColor: _bg,
+      body: Column(
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
+              child: Column(
+                children: [
+                  _buildEditButton(),
+                  const SizedBox(height: 24),
+                  _buildMenuSection(),
+                  const SizedBox(height: 24),
+                  _buildLogoutButton(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: _green,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        child: Stack(
           children: [
-            const SizedBox(height: 24),
-            _buildTitle(),
-            const SizedBox(height: 32),
-            _buildAvatar(),
-            const SizedBox(height: 12),
-            _buildUserInfo(),
-            const SizedBox(height: 16),
-            _buildEditButton(),
-            const SizedBox(height: 32),
-            _buildMenuItems(),
-            const SizedBox(height: 24),
-            _buildLogOutButton(),
-            const SizedBox(height: 32),
+            Positioned(
+              right: -50,
+              top: -30,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 70,
+              top: 20,
+              child: Container(
+                width: 110,
+                height: 110,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+              ),
+            ),
+            Positioned(
+              left: -20,
+              bottom: -40,
+              child: Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.05),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 60, 24, 32),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'My Profile',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: const Icon(
+                          Icons.settings_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.6),
+                        width: 3,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.15),
+                          blurRadius: 16,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/profile.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'John',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'anonymous@gmail.com',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildTitle() {
-    return const Text(
-      'My Profile',
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: _foreground,
-      ),
-    );
-  }
-
-  Widget _buildAvatar() {
-    return Container(
-      width: 120,
-      height: 120,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: _primary.withAlpha(60), width: 2),
-        image: const DecorationImage(
-          image: AssetImage('assets/images/profile.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserInfo() {
-    return const Column(
-      children: [
-        Text(
-          'John',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: _foreground,
-          ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          'anonymous@gmail.com',
-          style: TextStyle(fontSize: 14, color: _muted),
-        ),
-      ],
     );
   }
 
   Widget _buildEditButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: OutlinedButton(
-          onPressed: () {},
-          style: OutlinedButton.styleFrom(
-            foregroundColor: _primary,
-            side: const BorderSide(color: _primary),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 12),
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: () {},
+        icon: const Icon(Icons.edit_rounded, size: 18),
+        label: const Text(
+          'Edit Profile',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: _green,
+          side: const BorderSide(color: _green, width: 1.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
           ),
-          child: const Text(
-            'Edit Profile',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          backgroundColor: Colors.white,
         ),
       ),
     );
   }
 
-  Widget _buildMenuItems() {
+  Widget _buildMenuSection() {
     final items = [
-      (Icons.receipt_long_outlined, 'Shopping History'),
-      (Icons.favorite_border, 'Favorite'),
-      (Icons.info_outline, 'Information'),
-      (Icons.settings_outlined, 'Settings'),
+      (Icons.receipt_long_rounded, 'Shopping History', 'Riwayat belanja Anda'),
+      (Icons.favorite_rounded, 'Favorite', 'Bahan makanan favorit'),
+      (Icons.info_rounded, 'Information', 'Tentang aplikasi'),
+      (Icons.settings_rounded, 'Settings', 'Pengaturan akun'),
     ];
 
     return Column(
-      children: items
-          .map((item) => _MenuItem(icon: item.$1, label: item.$2))
-          .toList(),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Menu',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: _foreground,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ...items.map((item) => _buildMenuItem(
+              icon: item.$1,
+              label: item.$2,
+              subtitle: item.$3,
+            )),
+      ],
     );
   }
 
-  Widget _buildLogOutButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFDC2626),
-            foregroundColor: Colors.white,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 12),
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String label,
+    required String subtitle,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _border, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-          child: const Text(
-            'Log Out',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ],
+      ),
+      child: InkWell(
+        onTap: () {},
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0FDF4),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, size: 22, color: _green),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: _foreground,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: _muted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.chevron_right_rounded,
+                size: 22,
+                color: Color(0xFFD1D5DB),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-}
-
-class _MenuItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const _MenuItem({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        child: Row(
-          children: [
-            Icon(icon, size: 24, color: const Color(0xFF374151)),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF111827),
-                ),
-              ),
-            ),
-            const Icon(Icons.chevron_right, size: 20, color: Color(0xFF9CA3AF)),
-          ],
+  Widget _buildLogoutButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {},
+        icon: const Icon(Icons.logout_rounded, size: 18),
+        label: const Text(
+          'Log Out',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFEF4444),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 14),
         ),
       ),
     );
