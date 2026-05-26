@@ -11,31 +11,53 @@ class SearchBarView extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12.0),
-              border: Border.all(color: const Color(0xFFD1D5DB), width: 1.0),
+              borderRadius: BorderRadius.circular(14.0),
+              border: Border.all(color: const Color(0xFFE5E7EB), width: 1.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: const TextField(
               decoration: InputDecoration(
                 hintText: 'Cari bahan (misal: Daging)',
                 hintStyle: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
                 prefixIcon: Icon(
-                  Icons.search,
+                  Icons.search_rounded,
                   color: Color(0xFF9CA3AF),
-                  size: 24,
+                  size: 22,
                 ),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 12.0),
+                contentPadding: EdgeInsets.symmetric(vertical: 14.0),
               ),
             ),
           ),
         ),
-        const SizedBox(width: 8.0),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.filter_list_rounded, // Ikon corong filter yang lebih presisi
-            color: Color(0xFF1F2937),
-            size: 28,
+        const SizedBox(width: 10.0),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14.0),
+            border: Border.all(color: const Color(0xFFE5E7EB), width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.tune_rounded,
+              color: Color(0xFF0F9F68),
+              size: 22,
+            ),
+            padding: const EdgeInsets.all(12),
           ),
         ),
       ],
