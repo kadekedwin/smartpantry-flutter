@@ -6,21 +6,24 @@ import 'widgets/shopping_list_item.dart';
 class AddTab extends StatelessWidget {
   const AddTab({super.key});
 
+  static const _green = Color(0xFF0F9F68);
+  static const _bg = Color(0xFFF9FAFB);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: const Color(0xFFFAFAFA),
+        backgroundColor: _bg,
         body: Column(
           children: [
             _buildHeader(context),
-            const Material(
+            Container(
               color: Colors.white,
-              child: TabBar(
-                labelColor: Color(0xFF059669),
+              child: const TabBar(
+                labelColor: _green,
                 unselectedLabelColor: Color(0xFF9CA3AF),
-                indicatorColor: Color(0xFF059669),
+                indicatorColor: _green,
                 indicatorWeight: 2,
                 tabs: [
                   Tab(text: 'Daftar Belanja'),
@@ -32,10 +35,107 @@ class AddTab extends StatelessWidget {
               child: TabBarView(
                 children: [
                   _buildShoppingListTab(),
-                  const Center(
-                    child: Text(
-                      'Input Langsung - Coming Soon',
-                      style: TextStyle(color: Color(0xFF6B7280)),
+                  _buildDirectInputTab(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: _green,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -50,
+              top: -30,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 70,
+              top: 20,
+              child: Container(
+                width: 110,
+                height: 110,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+              ),
+            ),
+            Positioned(
+              left: -20,
+              bottom: -40,
+              child: Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.05),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Tambah Belanjaan',
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Catat apa yang perlu dibeli',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xFFE5E7EB),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      Icons.add_rounded,
+                      color: Colors.white,
+                      size: 22,
                     ),
                   ),
                 ],
@@ -47,52 +147,12 @@ class AddTab extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 32,
-        left: 24,
-        right: 24,
-        bottom: 32,
-      ),
-      decoration: const BoxDecoration(
-        color: Color(0xFF059669),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Tambah Belanjaan',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Catat apa yang perlu di beli hari ini',
-            style: TextStyle(
-              fontSize: 16,
-              color: Color(0xFFD1FAE5),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildShoppingListTab() {
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
       children: [
         const ShoppingPlanCard(),
-        const SizedBox(height: 32),
+        const SizedBox(height: 24),
         const Text(
           'BELUM DIBELI (1)',
           style: TextStyle(
@@ -102,13 +162,52 @@ class AddTab extends StatelessWidget {
             letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         ShoppingListItem(
           item: dummyShoppingList.first,
           onToggle: () {},
         ),
-        const SizedBox(height: 32),
       ],
+    );
+  }
+
+  Widget _buildDirectInputTab() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0FDF4),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(
+              Icons.edit_note_rounded,
+              color: _green,
+              size: 36,
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Input Langsung',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF111827),
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Segera hadir',
+            style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF6B7280),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

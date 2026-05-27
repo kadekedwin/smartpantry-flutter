@@ -5,16 +5,19 @@ import 'widgets/notification_card.dart';
 class NotificationTab extends StatelessWidget {
   const NotificationTab({super.key});
 
+  static const _green = Color(0xFF0F9F68);
+  static const _bg = Color(0xFFF9FAFB);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: _bg,
       body: Column(
         children: [
           _buildHeader(context),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
               children: _buildNotificationList(),
             ),
           ),
@@ -24,41 +27,103 @@ class NotificationTab extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 32,
-        left: 24,
-        right: 24,
-        bottom: 32,
-      ),
       decoration: const BoxDecoration(
-        color: Color(0xFF059669),
+        color: _green,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
       ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Notifikasi',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -50,
+              top: -30,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
+              ),
             ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Update inventoris dapurmu',
-            style: TextStyle(
-              fontSize: 16,
-              color: Color(0xFFD1FAE5),
+            Positioned(
+              right: 70,
+              top: 20,
+              child: Container(
+                width: 110,
+                height: 110,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              left: -20,
+              bottom: -40,
+              child: Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.05),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Notifikasi',
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Update inventori dapurmu',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xFFE5E7EB),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      Icons.done_all_rounded,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -72,7 +137,8 @@ class NotificationTab extends StatelessWidget {
         currentGroup = item.group;
         widgets.add(
           Padding(
-            padding: EdgeInsets.only(bottom: 12, top: widgets.isEmpty ? 0 : 16),
+            padding:
+                EdgeInsets.only(bottom: 10, top: widgets.isEmpty ? 0 : 16),
             child: Text(
               currentGroup,
               style: const TextStyle(
@@ -87,9 +153,6 @@ class NotificationTab extends StatelessWidget {
       }
       widgets.add(NotificationCard(item: item));
     }
-
-    // Add extra padding at the bottom for better scroll experience
-    widgets.add(const SizedBox(height: 24));
 
     return widgets;
   }

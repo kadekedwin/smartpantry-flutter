@@ -8,8 +8,11 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  static const _primary = Color(0xFF029E65);
+  static const _green = Color(0xFF0F9F68);
   static const _red = Color(0xFFEF4444);
+  static const _foreground = Color(0xFF111827);
+  static const _muted = Color(0xFF6B7280);
+  static const _bg = Color(0xFFF9FAFB);
 
   late final PageController _pageController;
   int _currentPage = 0;
@@ -29,7 +32,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: _bg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,9 +51,7 @@ class _HomeTabState extends State<HomeTab> {
                     _buildQuickActions(),
                     const SizedBox(height: 24),
                     _buildExpiringSection(),
-                    const SizedBox(
-                      height: 48,
-                    ), // Padding at bottom to not get cut off by bottom nav
+                    const SizedBox(height: 48),
                   ],
                 ),
               ),
@@ -66,65 +67,132 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: _primary,
+        color: _green,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(36),
-          bottomRight: Radius.circular(36),
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
         ),
       ),
-      padding: EdgeInsets.only(
-        top: statusBarHeight + 16,
-        left: 24,
-        right: 24,
-        bottom: 28,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Selamat pagi,',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'John Doe',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Search Box
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -50,
+              top: -30,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.08),
                 ),
-              ],
+              ),
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.search, color: Colors.grey, size: 24),
-                const SizedBox(width: 12),
-                Text(
-                  'Masak apa hari ini?',
-                  style: TextStyle(color: Colors.grey.shade400, fontSize: 16),
+            Positioned(
+              right: 70,
+              top: 20,
+              child: Container(
+                width: 110,
+                height: 110,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              left: -20,
+              bottom: -40,
+              child: Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.05),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Selamat pagi,',
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.8),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          const Text(
+                            'John Doe',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: const Icon(
+                          Icons.notifications_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.search, color: Color(0xFF9CA3AF),
+                            size: 22),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Masak apa hari ini?',
+                          style: TextStyle(
+                              color: Colors.grey.shade400, fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -143,11 +211,7 @@ class _HomeTabState extends State<HomeTab> {
           width: double.infinity,
           child: PageView.builder(
             controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
+            onPageChanged: (index) => setState(() => _currentPage = index),
             itemCount: slides.length,
             itemBuilder: (context, index) {
               return Container(
@@ -156,7 +220,7 @@ class _HomeTabState extends State<HomeTab> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(20),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -170,17 +234,19 @@ class _HomeTabState extends State<HomeTab> {
             },
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
             slides.length,
-            (index) => Container(
+            (index) => AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
               margin: const EdgeInsets.symmetric(horizontal: 3),
               width: _currentPage == index ? 24 : 8,
               height: 6,
               decoration: BoxDecoration(
-                color: _currentPage == index ? _primary : Colors.grey.shade300,
+                color:
+                    _currentPage == index ? _green : const Color(0xFFD1D5DB),
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
@@ -191,21 +257,42 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   Widget _buildQuickActions() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildActionCard(
-          icon: Icons.restaurant_menu_rounded,
-          iconColor: _primary,
-          label: 'Menu',
-          onTap: () {},
+        const Text(
+          'Aksi Cepat',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: _foreground,
+          ),
         ),
-        const SizedBox(width: 32),
-        _buildActionCard(
-          icon: Icons.calendar_today_rounded,
-          iconColor: const Color(0xFFF97316), // Orange
-          label: 'Jadwal Mingguan',
-          onTap: () {},
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            Expanded(
+              child: _buildActionCard(
+                icon: Icons.restaurant_menu_rounded,
+                iconColor: _green,
+                bgColor: const Color(0xFFF0FDF4),
+                label: 'Menu',
+                subtitle: 'Resep hari ini',
+                onTap: () {},
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildActionCard(
+                icon: Icons.calendar_today_rounded,
+                iconColor: const Color(0xFFF97316),
+                bgColor: const Color(0xFFFFF7ED),
+                label: 'Jadwal',
+                subtitle: 'Mingguan',
+                onTap: () {},
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -214,273 +301,286 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildActionCard({
     required IconData icon,
     required Color iconColor,
+    required Color bgColor,
     required String label,
+    required String subtitle,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Icon(icon, color: iconColor, size: 28),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF4B5563),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: iconColor, size: 22),
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: _foreground,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: _muted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded,
+                size: 20, color: Color(0xFFD1D5DB)),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildExpiringSection() {
-    return Stack(
-      clipBehavior: Clip.none,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Third card (deepest stack layer)
-        Positioned(
-          left: 20,
-          right: 20,
-          bottom: -16,
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(102),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
+        const Text(
+          'Segera Kedaluwarsa',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: _foreground,
           ),
         ),
-        // Second card (middle stack layer)
-        Positioned(
-          left: 10,
-          right: 10,
-          bottom: -8,
-          child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(204),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-          ),
-        ),
-        // Top Card (active)
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFF3F4F6)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(10),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
+        const SizedBox(height: 14),
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: -16,
+              child: Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE5E7EB)),
+                ),
               ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Badge & Content
-              Stack(
-                clipBehavior: Clip.none,
+            ),
+            Positioned(
+              left: 10,
+              right: 10,
+              bottom: -8,
+              child: Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.8),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE5E7EB)),
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Badge: Kedalauarsa 3 HARI LAGI!!!
-                  Positioned(
-                    top: 12,
-                    left: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: const BoxDecoration(
-                        color: _red,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(12),
-                          bottomRight: Radius.circular(12),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.access_time_filled,
-                            color: Colors.white,
-                            size: 14,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            'Kedalauarsa 3 HARI LAGI!!!',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        top: 12,
+                        left: 0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: const BoxDecoration(
+                            color: _red,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              bottomRight: Radius.circular(12),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // Content: Info & Image
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 48,
-                      left: 16,
-                      right: 16,
-                      bottom: 16,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                'JANGAN BUANG AKU!',
+                              Icon(Icons.access_time_filled,
+                                  color: Colors.white, size: 13),
+                              SizedBox(width: 4),
+                              Text(
+                                'Kedaluwarsa 3 HARI LAGI!',
                                 style: TextStyle(
-                                  color: _red,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 12,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              const Text(
-                                'Telur',
-                                style: TextStyle(
-                                  color: Color(0xFF111827),
+                                  color: Colors.white,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              const Text(
-                                'Stok: 3',
-                                style: TextStyle(
-                                  color: Color(0xFF4B5563),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        // Egg image
-                        Container(
-                          width: 100,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                'https://images.unsplash.com/photo-1516448424440-9dbca97779c1?q=80&w=300&auto=format&fit=crop',
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 48, left: 16, right: 16, bottom: 16),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'JANGAN BUANG AKU!',
+                                    style: TextStyle(
+                                      color: _red,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 11,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    'Telur',
+                                    style: TextStyle(
+                                      color: _foreground,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    'Stok: 3 butir',
+                                    style: TextStyle(
+                                      color: _muted,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              fit: BoxFit.cover,
                             ),
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFF5F5),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '🥚',
+                                  style: TextStyle(fontSize: 40),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _red,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        child: const Text(
+                          'Masak Sekarang',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFFF5F5),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.warning_amber_rounded,
+                            color: _red, size: 15),
+                        const SizedBox(width: 6),
+                        RichText(
+                          text: const TextSpan(
+                            style: TextStyle(
+                                fontSize: 12, color: _muted),
+                            children: [
+                              TextSpan(text: 'Ada '),
+                              TextSpan(
+                                text: '3 bahan lagi ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(text: 'yang perlu dicek'),
+                            ],
                           ),
                         ),
+                        const SizedBox(width: 4),
+                        const Icon(Icons.arrow_forward,
+                            color: _muted, size: 13),
                       ],
                     ),
                   ),
                 ],
               ),
-              // Masak Sekarang Button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _red,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text(
-                      'Masak Sekarang',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              // Footer Warning Section
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFFF5F5),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 16,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.warning_amber_rounded,
-                      color: _red,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 6),
-                    RichText(
-                      text: const TextSpan(
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF4B5563),
-                        ),
-                        children: [
-                          TextSpan(text: 'Ada '),
-                          TextSpan(
-                            text: '3 bahan lagi ',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(text: 'yang perlu dicek'),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.arrow_forward,
-                      color: Color(0xFF4B5563),
-                      size: 14,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
