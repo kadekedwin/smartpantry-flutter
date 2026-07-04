@@ -174,47 +174,29 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
   }
 
   Future<void> _toggle(ShoppingItem item) async {
-    if (!item.isBought) {
-      final result = await showModalBottomSheet<_MoveToInventoryResult>(
-        context: context,
-        isScrollControlled: true,
-        builder: (_) => _MoveToInventorySheet(item: item),
-      );
-      if (result == null) return;
-      try {
-        await InventoryService.create(
-          name: item.name,
-          icon: result.icon,
-          stock: item.quantity.round().clamp(1, 1 << 30),
-          unit: item.unit,
-          expiredAt: result.expiredAt,
-          category: result.category,
-        );
-        await ShoppingService.toggle(item.id);
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Dipindahkan ke inventory'),
-            backgroundColor: Color(0xFF0F9F68),
-          ),
-        );
-        _reload();
-      } on ApiException catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal (${e.statusCode}): ${e.message}')),
-        );
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal memindahkan: $e')),
-        );
-      }
-      return;
-    }
-
+    final result = await showModalBottomSheet<_MoveToInventoryResult>(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => _MoveToInventorySheet(item: item),
+    );
+    if (result == null) return;
     try {
+      await InventoryService.create(
+        name: item.name,
+        icon: result.icon,
+        stock: item.quantity.round().clamp(1, 1 << 30),
+        unit: item.unit,
+        expiredAt: result.expiredAt,
+        category: result.category,
+      );
       await ShoppingService.toggle(item.id);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Dipindahkan ke inventory'),
+          backgroundColor: Color(0xFF0F9F68),
+        ),
+      );
       _reload();
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -224,7 +206,7 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memperbarui status: $e')),
+        SnackBar(content: Text('Gagal memindahkan: $e')),
       );
     }
   }
@@ -267,6 +249,7 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
           }
           final items = snapshot.data ?? [];
           final notBought = items.where((e) => !e.isBought).toList();
+          final bought = items.where((e) => e.isBought).toList();
           return RefreshIndicator(
             onRefresh: () async => _reload(),
             child: ListView(
@@ -290,6 +273,22 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
                     onToggle: () => _toggle(item),
                   ),
                 ),
+                if (bought.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    'SUDAH DIBELI (${bought.length})',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF9CA3AF),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ...bought.map(
+                    (item) => ShoppingListItem(item: item),
+                  ),
+                ],
               ],
             ),
           );

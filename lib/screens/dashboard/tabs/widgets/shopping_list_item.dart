@@ -3,12 +3,12 @@ import '../../../../data/models/shopping_item.dart';
 
 class ShoppingListItem extends StatelessWidget {
   final ShoppingItem item;
-  final VoidCallback onToggle;
+  final VoidCallback? onToggle;
 
   const ShoppingListItem({
     super.key,
     required this.item,
-    required this.onToggle,
+    this.onToggle,
   });
 
   @override
