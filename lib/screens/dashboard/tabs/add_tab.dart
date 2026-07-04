@@ -3,7 +3,6 @@ import '../../../data/models/shopping_item.dart';
 import '../../../services/shopping_service.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
-import 'widgets/shopping_plan_card.dart';
 import 'widgets/shopping_list_item.dart';
 
 class AddTab extends StatelessWidget {
@@ -255,8 +254,6 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
               children: [
-                const ShoppingPlanCard(),
-                const SizedBox(height: 24),
                 Text(
                   'BELUM DIBELI (${notBought.length})',
                   style: const TextStyle(
