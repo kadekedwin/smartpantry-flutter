@@ -20,6 +20,17 @@ class _InventoryTabState extends State<InventoryTab> {
   void initState() {
     super.initState();
     _future = InventoryService.list();
+    InventoryService.revision.addListener(_onExternalChange);
+  }
+
+  @override
+  void dispose() {
+    InventoryService.revision.removeListener(_onExternalChange);
+    super.dispose();
+  }
+
+  void _onExternalChange() {
+    if (mounted) _reload();
   }
 
   void _reload() {

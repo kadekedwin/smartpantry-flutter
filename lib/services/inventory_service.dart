@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
 import '../data/models/inventory_item.dart';
 import 'api_client.dart';
 
 class InventoryService {
+  static final ValueNotifier<int> revision = ValueNotifier<int>(0);
+
   static Future<List<InventoryItem>> list({String? category}) async {
     final data = await ApiClient.get(
       '/inventory',
@@ -29,6 +32,8 @@ class InventoryService {
           '${expiredAt.year.toString().padLeft(4, '0')}-${expiredAt.month.toString().padLeft(2, '0')}-${expiredAt.day.toString().padLeft(2, '0')}',
       'category': category,
     });
-    return InventoryItem.fromJson(data as Map<String, dynamic>);
+    final item = InventoryItem.fromJson(data as Map<String, dynamic>);
+    revision.value++;
+    return item;
   }
 }
