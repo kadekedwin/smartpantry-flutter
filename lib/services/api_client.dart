@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import '../config/env.dart';
 import 'token_storage.dart';
 
@@ -17,12 +19,12 @@ class ApiClient {
   static Dio _instance() {
     if (_dio != null) return _dio!;
     final base = Env.apiBaseUrl.endsWith('/')
-        ? Env.apiBaseUrl.substring(0, Env.apiBaseUrl.length - 1)
-        : Env.apiBaseUrl;
+        ? Env.apiBaseUrl
+        : '${Env.apiBaseUrl}/';
     final dio = Dio(BaseOptions(
       baseUrl: base,
       contentType: 'application/json',
-      responseType: ResponseType.json,
+      responseType: ResponseType.plain,
       validateStatus: (_) => true,
     ));
     dio.interceptors.add(InterceptorsWrapper(
@@ -37,15 +39,37 @@ class ApiClient {
         handler.next(options);
       },
     ));
+    if (kDebugMode) {
+      dio.interceptors.add(LogInterceptor(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: false,
+        responseBody: true,
+        error: true,
+      ));
+    }
     _dio = dio;
     return dio;
   }
 
+  static dynamic _decodeBody(dynamic raw) {
+    if (raw == null) return null;
+    if (raw is! String) return raw;
+    if (raw.isEmpty) return null;
+    try {
+      return jsonDecode(raw);
+    } catch (_) {
+      return raw;
+    }
+  }
+
   static dynamic _unwrap(Response res) {
-    final body = res.data;
+    final body = _decodeBody(res.data);
     final status = res.statusCode ?? 0;
     if (status >= 200 && status < 300) {
-      return body is Map ? body['data'] : body;
+      if (body is Map && body.containsKey('data')) return body['data'];
+      return body;
     }
     final msg = body is Map && body['message'] != null
         ? body['message'].toString()
@@ -60,9 +84,10 @@ class ApiClient {
     Object? body,
     bool auth = true,
   }) async {
+    final normalized = path.startsWith('/') ? path.substring(1) : path;
     try {
       final res = await _instance().request(
-        path,
+        normalized,
         data: body,
         queryParameters: query,
         options: Options(method: method, extra: {'auth': auth}),

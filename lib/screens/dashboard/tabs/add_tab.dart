@@ -168,17 +168,63 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
   }
 
   void _reload() {
-    setState(() => _future = ShoppingService.list());
+    setState(() {
+      _future = ShoppingService.list();
+    });
   }
 
   Future<void> _toggle(ShoppingItem item) async {
+    if (!item.isBought) {
+      final result = await showModalBottomSheet<_MoveToInventoryResult>(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) => _MoveToInventorySheet(item: item),
+      );
+      if (result == null) return;
+      try {
+        await InventoryService.create(
+          name: item.name,
+          icon: result.icon,
+          stock: item.quantity.round().clamp(1, 1 << 30),
+          unit: item.unit,
+          expiredAt: result.expiredAt,
+          category: result.category,
+        );
+        await ShoppingService.toggle(item.id);
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Dipindahkan ke inventory'),
+            backgroundColor: Color(0xFF0F9F68),
+          ),
+        );
+        _reload();
+      } on ApiException catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal (${e.statusCode}): ${e.message}')),
+        );
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal memindahkan: $e')),
+        );
+      }
+      return;
+    }
+
     try {
       await ShoppingService.toggle(item.id);
       _reload();
-    } catch (_) {
+    } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal memperbarui status')),
+        SnackBar(content: Text('Gagal (${e.statusCode}): ${e.message}')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memperbarui status: $e')),
       );
     }
   }
@@ -568,6 +614,148 @@ class _DirectInputViewState extends State<_DirectInputView> {
                       ),
                     )
                   : const Text('Simpan ke Inventory'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MoveToInventoryResult {
+  final String category;
+  final DateTime expiredAt;
+  final String icon;
+  _MoveToInventoryResult({
+    required this.category,
+    required this.expiredAt,
+    required this.icon,
+  });
+}
+
+class _MoveToInventorySheet extends StatefulWidget {
+  final ShoppingItem item;
+  const _MoveToInventorySheet({required this.item});
+
+  @override
+  State<_MoveToInventorySheet> createState() => _MoveToInventorySheetState();
+}
+
+class _MoveToInventorySheetState extends State<_MoveToInventorySheet> {
+  static const _green = Color(0xFF0F9F68);
+
+  String _category = 'kulkas';
+  DateTime _expiredAt = DateTime.now().add(const Duration(days: 7));
+  final _iconController = TextEditingController(text: '📦');
+
+  @override
+  void dispose() {
+    _iconController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _expiredAt,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+    );
+    if (picked != null) setState(() => _expiredAt = picked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final dateStr =
+        '${_expiredAt.day.toString().padLeft(2, '0')}/${_expiredAt.month.toString().padLeft(2, '0')}/${_expiredAt.year}';
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 24,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Simpan ke Inventory',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${widget.item.name} · ${widget.item.quantity.toStringAsFixed(widget.item.quantity.truncateToDouble() == widget.item.quantity ? 0 : 1)} ${widget.item.unit}',
+            style: const TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(
+                width: 90,
+                child: TextField(
+                  controller: _iconController,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    labelText: 'Icon',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  initialValue: _category,
+                  decoration: const InputDecoration(
+                    labelText: 'Simpan di',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'kulkas', child: Text('Kulkas')),
+                    DropdownMenuItem(value: 'freezer', child: Text('Freezer')),
+                    DropdownMenuItem(
+                        value: 'rak_dapur', child: Text('Rak Dapur')),
+                  ],
+                  onChanged: (v) => setState(() => _category = v ?? 'kulkas'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          InkWell(
+            onTap: _pickDate,
+            child: InputDecorator(
+              decoration: const InputDecoration(
+                labelText: 'Tanggal Kedaluwarsa',
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.calendar_today, size: 18),
+              ),
+              child: Text(dateStr),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              onPressed: () => Navigator.pop(
+                context,
+                _MoveToInventoryResult(
+                  category: _category,
+                  expiredAt: _expiredAt,
+                  icon: _iconController.text.trim().isEmpty
+                      ? '📦'
+                      : _iconController.text.trim(),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _green,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text('Pindahkan'),
             ),
           ),
         ],

@@ -23,7 +23,9 @@ class _InventoryTabState extends State<InventoryTab> {
   }
 
   void _reload() {
-    setState(() => _future = InventoryService.list());
+    setState(() {
+      _future = InventoryService.list();
+    });
   }
 
   Color _getExpiryColor(DateTime expiredAt) {

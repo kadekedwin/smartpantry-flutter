@@ -24,7 +24,9 @@ class _NotificationTabState extends State<NotificationTab> {
   }
 
   void _reload() {
-    setState(() => _future = NotificationService.list());
+    setState(() {
+      _future = NotificationService.list();
+    });
   }
 
   @override
