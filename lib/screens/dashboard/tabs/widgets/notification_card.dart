@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../data/dummy/notification_data.dart';
+import '../../../../data/models/notification_item.dart';
 
 class NotificationCard extends StatelessWidget {
   final NotificationItem item;
@@ -100,16 +100,14 @@ class NotificationCard extends StatelessWidget {
                         height: 1.4,
                       ),
                     ),
-                    if (item.time.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        item.time,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF9CA3AF),
-                        ),
+                    const SizedBox(height: 8),
+                    Text(
+                      item.time,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF9CA3AF),
                       ),
-                    ],
+                    ),
                   ],
                 ),
               ),

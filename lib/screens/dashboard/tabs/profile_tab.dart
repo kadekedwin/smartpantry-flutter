@@ -1,41 +1,93 @@
 import 'package:flutter/material.dart';
+import '../../../data/models/user.dart';
+import '../../../services/profile_service.dart';
+import '../../../services/auth_service.dart';
+import '../../../services/api_client.dart';
+import '../../auth/login_screen.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
 
+  @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
   static const _green = Color(0xFF0F9F68);
   static const _foreground = Color(0xFF111827);
   static const _muted = Color(0xFF6B7280);
   static const _border = Color(0xFFE5E7EB);
   static const _bg = Color(0xFFF9FAFB);
 
+  late Future<User> _future;
+  bool _loggingOut = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = ProfileService.get();
+  }
+
+  Future<void> _logout() async {
+    if (_loggingOut) return;
+    setState(() => _loggingOut = true);
+    try {
+      await AuthService.logout();
+    } catch (_) {
+      // ignore, we clear token regardless
+    }
+    if (!mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (_) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _bg,
-      body: Column(
-        children: [
-          _buildHeader(),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-              child: Column(
-                children: [
-                  _buildEditButton(),
-                  const SizedBox(height: 24),
-                  _buildMenuSection(),
-                  const SizedBox(height: 24),
-                  _buildLogoutButton(),
-                ],
+      body: FutureBuilder<User>(
+        future: _future,
+        builder: (context, snapshot) {
+          return Column(
+            children: [
+              _buildHeader(snapshot),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
+                  child: Column(
+                    children: [
+                      _buildEditButton(),
+                      const SizedBox(height: 24),
+                      _buildMenuSection(),
+                      const SizedBox(height: 24),
+                      _buildLogoutButton(),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AsyncSnapshot<User> snapshot) {
+    String name = '...';
+    String email = '...';
+    if (snapshot.connectionState == ConnectionState.done) {
+      if (snapshot.hasError) {
+        final err = snapshot.error;
+        name = 'Gagal memuat';
+        email = err is ApiException ? err.message : 'Tidak terhubung';
+      } else if (snapshot.hasData) {
+        name = snapshot.data!.name;
+        email = snapshot.data!.email;
+      }
+    }
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -141,9 +193,9 @@ class ProfileTab extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  const Text(
-                    'John',
-                    style: TextStyle(
+                  Text(
+                    name,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -151,7 +203,7 @@ class ProfileTab extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'anonymous@gmail.com',
+                    email,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white.withValues(alpha: 0.8),
@@ -293,8 +345,17 @@ class ProfileTab extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () {},
-        icon: const Icon(Icons.logout_rounded, size: 18),
+        onPressed: _loggingOut ? null : _logout,
+        icon: _loggingOut
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : const Icon(Icons.logout_rounded, size: 18),
         label: const Text(
           'Log Out',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),

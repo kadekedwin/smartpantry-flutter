@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
-import '../../../data/dummy/notification_data.dart';
+import '../../../data/models/notification_item.dart';
+import '../../../services/notification_service.dart';
+import '../../../services/api_client.dart';
 import 'widgets/notification_card.dart';
 
-class NotificationTab extends StatelessWidget {
+class NotificationTab extends StatefulWidget {
   const NotificationTab({super.key});
 
+  @override
+  State<NotificationTab> createState() => _NotificationTabState();
+}
+
+class _NotificationTabState extends State<NotificationTab> {
   static const _green = Color(0xFF0F9F68);
   static const _bg = Color(0xFFF9FAFB);
+
+  late Future<List<NotificationItem>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = NotificationService.list();
+  }
+
+  void _reload() {
+    setState(() => _future = NotificationService.list());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +35,42 @@ class NotificationTab extends StatelessWidget {
         children: [
           _buildHeader(context),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-              children: _buildNotificationList(),
+            child: FutureBuilder<List<NotificationItem>>(
+              future: _future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  final err = snapshot.error;
+                  final msg = err is ApiException
+                      ? err.message
+                      : 'Tidak dapat terhubung ke server';
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(msg),
+                        const SizedBox(height: 12),
+                        TextButton(
+                            onPressed: _reload,
+                            child: const Text('Coba lagi')),
+                      ],
+                    ),
+                  );
+                }
+                final items = snapshot.data ?? [];
+                if (items.isEmpty) {
+                  return const Center(child: Text('Belum ada notifikasi'));
+                }
+                return RefreshIndicator(
+                  onRefresh: () async => _reload(),
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
+                    children: _buildNotificationList(items),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -128,11 +180,11 @@ class NotificationTab extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildNotificationList() {
+  List<Widget> _buildNotificationList(List<NotificationItem> items) {
     final List<Widget> widgets = [];
     String currentGroup = '';
 
-    for (final item in dummyNotifications) {
+    for (final item in items) {
       if (item.group != currentGroup) {
         currentGroup = item.group;
         widgets.add(
