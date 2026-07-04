@@ -136,41 +136,23 @@ class _NotificationTabState extends State<NotificationTab> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Notifikasi',
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        'Update inventori dapurmu',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color(0xFFE5E7EB),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: const Icon(
-                      Icons.done_all_rounded,
+                  Text(
+                    'Notifikasi',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      size: 22,
+                    ),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    'Update inventori dapurmu',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xFFE5E7EB),
                     ),
                   ),
                 ],

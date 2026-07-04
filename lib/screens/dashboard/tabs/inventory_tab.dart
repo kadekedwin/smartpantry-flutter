@@ -68,7 +68,6 @@ class _InventoryTabState extends State<InventoryTab> {
               HeaderInventoryView(
                 title: 'Inventory',
                 subtitle: 'Stok saya',
-                onAddPressed: () {},
                 stats: [
                   HeaderStat(
                     label: 'Kulkas',
