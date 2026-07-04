@@ -1,7 +1,7 @@
 class InventoryItem {
   final String id;
   final String name;
-  final String icon;
+  final String image;
   final int stock;
   final String unit;
   final DateTime expiredAt;
@@ -10,7 +10,7 @@ class InventoryItem {
   InventoryItem({
     required this.id,
     required this.name,
-    required this.icon,
+    required this.image,
     required this.stock,
     required this.unit,
     required this.expiredAt,
@@ -21,8 +21,8 @@ class InventoryItem {
     return InventoryItem(
       id: json['id'].toString(),
       name: json['name'] as String,
-      icon: json['icon'] as String,
-      stock: (json['stock'] as num).toInt(),
+      image: json['image'] as String? ?? '',
+      stock: (json['stock'] as num?)?.toInt() ?? 0,
       unit: json['unit'] as String,
       expiredAt: DateTime.parse(json['expired_at'] as String),
       category: json['category'] as String,

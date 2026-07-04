@@ -83,6 +83,7 @@ class ApiClient {
     Map<String, dynamic>? query,
     Object? body,
     bool auth = true,
+    String? contentType,
   }) async {
     final normalized = path.startsWith('/') ? path.substring(1) : path;
     try {
@@ -90,7 +91,11 @@ class ApiClient {
         normalized,
         data: body,
         queryParameters: query,
-        options: Options(method: method, extra: {'auth': auth}),
+        options: Options(
+          method: method,
+          contentType: contentType,
+          extra: {'auth': auth},
+        ),
       );
       return _unwrap(res);
     } on DioException catch (e) {
@@ -112,6 +117,14 @@ class ApiClient {
     bool auth = true,
   }) =>
       _send('POST', path, body: body, auth: auth);
+
+  static Future<dynamic> postForm(
+    String path,
+    FormData form, {
+    bool auth = true,
+  }) =>
+      _send('POST', path,
+          body: form, auth: auth, contentType: 'multipart/form-data');
 
   static Future<dynamic> patch(
     String path, {
