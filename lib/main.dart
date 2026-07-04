@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/dashboard/dashboard_screen.dart';
+import 'services/token_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  runApp(const SmartPantryApp());
+  final token = await TokenStorage.read();
+  runApp(SmartPantryApp(loggedIn: token != null && token.isNotEmpty));
 }
 
 class SmartPantryApp extends StatelessWidget {
-  const SmartPantryApp({super.key});
+  final bool loggedIn;
+  const SmartPantryApp({super.key, required this.loggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class SmartPantryApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF059669)),
         useMaterial3: true,
       ),
-      home: const OnboardingScreen(),
+      home: loggedIn ? const DashboardScreen() : const OnboardingScreen(),
     );
   }
 }
