@@ -5,7 +5,7 @@ import '../../../data/models/shopping_item.dart';
 import '../../../services/shopping_service.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
-import 'widgets/shopping_list_item.dart';
+import '../../../components/shopping_list_item.dart';
 
 class AddTab extends StatelessWidget {
   const AddTab({super.key});

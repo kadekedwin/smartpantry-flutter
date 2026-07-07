@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'dashboard/tabs/home_tab.dart';
-import 'dashboard/tabs/inventory_tab.dart';
-import 'dashboard/tabs/add_tab.dart';
-import 'dashboard/tabs/notification_tab.dart';
-import 'dashboard/tabs/profile_tab.dart';
+import '../tabs/home_tab.dart';
+import '../tabs/inventory_tab.dart';
+import '../tabs/add_tab.dart';
+import '../tabs/notification_tab.dart';
+import '../tabs/profile_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../data/models/notification_item.dart';
 import '../../../services/notification_service.dart';
 import '../../../services/api_client.dart';
-import 'widgets/notification_card.dart';
+import '../../../components/notification_card.dart';
 
 class NotificationTab extends StatefulWidget {
   const NotificationTab({super.key});
