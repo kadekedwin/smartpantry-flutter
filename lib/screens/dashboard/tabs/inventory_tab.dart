@@ -47,9 +47,6 @@ class _InventoryTabState extends State<InventoryTab> {
     return const Color(0xFF0F9F68);
   }
 
-  int _countByCategory(List<InventoryItem> items, String category) =>
-      items.where((e) => e.category == category).length;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,24 +61,7 @@ class _InventoryTabState extends State<InventoryTab> {
 
           return Column(
             children: [
-              _InventoryHeader(
-                title: 'Inventory',
-                subtitle: 'Stok saya',
-                stats: [
-                  _HeaderStat(
-                    label: 'Kulkas',
-                    value: '${_countByCategory(items, 'kulkas')}',
-                  ),
-                  _HeaderStat(
-                    label: 'Freezer',
-                    value: '${_countByCategory(items, 'freezer')}',
-                  ),
-                  _HeaderStat(
-                    label: 'Rak Dapur',
-                    value: '${_countByCategory(items, 'rak_dapur')}',
-                  ),
-                ],
-              ),
+              _buildHeader(context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                 child: Row(
@@ -320,27 +300,9 @@ class _InventoryTabState extends State<InventoryTab> {
       ),
     );
   }
-}
 
-class _HeaderStat {
-  final String label;
-  final String value;
-  const _HeaderStat({required this.label, required this.value});
-}
-
-class _InventoryHeader extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final List<_HeaderStat> stats;
-
-  const _InventoryHeader({
-    required this.title,
-    required this.subtitle,
-    this.stats = const [],
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildHeader(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -394,70 +356,31 @@ class _InventoryHeader extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 60, 24, 28),
-              child: Column(
+              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 28,
+                    'Inventory',
+                    style: TextStyle(
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 6),
                   Text(
-                    subtitle,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    'Stok saya',
+                    style: TextStyle(
+                      fontSize: 15,
                       color: Color(0xFFE5E7EB),
                     ),
                   ),
-                  if (stats.isNotEmpty) ...[
-                    const SizedBox(height: 20),
-                    Row(children: stats.map(_buildStatChip).toList()),
-                  ],
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildStatChip(_HeaderStat stat) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        children: [
-          Text(
-            stat.value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            stat.label,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.8),
-              fontSize: 11,
-            ),
-          ),
-        ],
       ),
     );
   }

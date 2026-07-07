@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../data/models/user.dart';
+import '../../../services/profile_service.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -10,6 +12,8 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   static const _green = Color(0xFF0F9F68);
   static const _bg = Color(0xFFF9FAFB);
+
+  final Future<User> _userFuture = ProfileService.get();
 
   @override
   Widget build(BuildContext context) {
@@ -95,13 +99,18 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      const Text(
-                        'John Doe',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      FutureBuilder<User>(
+                        future: _userFuture,
+                        builder: (context, snapshot) {
+                          return Text(
+                            snapshot.data?.name ?? '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
