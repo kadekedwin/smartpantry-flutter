@@ -105,34 +105,6 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 14),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.08),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.search, color: Color(0xFF9CA3AF),
-                            size: 22),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Masak apa hari ini?',
-                          style: TextStyle(
-                              color: Colors.grey.shade400, fontSize: 15),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),

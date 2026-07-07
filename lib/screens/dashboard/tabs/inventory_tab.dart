@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/search.dart';
 import '../widgets/header.dart';
 import '../../../data/models/inventory_item.dart';
 import '../../../services/inventory_service.dart';
@@ -82,10 +81,6 @@ class _InventoryTabState extends State<InventoryTab> {
                     value: '${_countByCategory(items, 'rak_dapur')}',
                   ),
                 ],
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 20, 16, 0),
-                child: SearchBarView(),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
