@@ -3,6 +3,7 @@ import '../../../data/models/user.dart';
 import '../../../services/profile_service.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/api_client.dart';
+import '../widgets/tab_header.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -48,7 +49,10 @@ class _ProfileTabState extends State<ProfileTab> {
         builder: (context, snapshot) {
           return Column(
             children: [
-              _buildHeader(context),
+              const TabHeader(
+                title: 'My Profile',
+                subtitle: 'Kelola akun Anda',
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
@@ -68,90 +72,6 @@ class _ProfileTabState extends State<ProfileTab> {
             ],
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: _green,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              right: -50,
-              top: -30,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.08),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 70,
-              top: 20,
-              child: Container(
-                width: 110,
-                height: 110,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
-              ),
-            ),
-            Positioned(
-              left: -20,
-              bottom: -40,
-              child: Container(
-                width: 130,
-                height: 130,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'My Profile',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Kelola akun Anda',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xFFE5E7EB),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
