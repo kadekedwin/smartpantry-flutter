@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smartpantry/screens/dashboard/widgets/tab_header.dart';
 import '../../../data/models/inventory_item.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
-import '../widgets/tab_header.dart';
 
 class InventoryTab extends StatefulWidget {
   const InventoryTab({super.key});
@@ -301,5 +301,4 @@ class _InventoryTabState extends State<InventoryTab> {
       ),
     );
   }
-
 }

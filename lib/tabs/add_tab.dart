@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smartpantry/screens/dashboard/widgets/tab_header.dart';
 import '../../../data/models/shopping_item.dart';
 import '../../../services/shopping_service.dart';
 import '../../../services/inventory_service.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smartpantry/screens/dashboard/widgets/tab_header.dart';
 import '../../../data/models/user.dart';
 import '../../../services/profile_service.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/api_client.dart';
-import '../widgets/tab_header.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -108,10 +108,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
         ),
         const SizedBox(height: 4),
-        Text(
-          email,
-          style: const TextStyle(fontSize: 13, color: _muted),
-        ),
+        Text(email, style: const TextStyle(fontSize: 13, color: _muted)),
       ],
     );
   }
