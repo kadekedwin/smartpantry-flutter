@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../dashboard/dashboard_screen.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_client.dart';
 
@@ -39,10 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordController.text,
       );
       if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const DashboardScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/');
     } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

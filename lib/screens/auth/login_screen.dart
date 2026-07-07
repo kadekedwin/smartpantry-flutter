@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'register_screen.dart';
-import '../dashboard/dashboard_screen.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_client.dart';
 
@@ -28,10 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
       if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const DashboardScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/');
     } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -254,12 +249,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: _muted, fontSize: 14),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterScreen(),
-                        ),
-                      ),
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/register'),
                       child: const Text(
                         'Daftar',
                         style: TextStyle(

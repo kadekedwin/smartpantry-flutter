@@ -3,7 +3,6 @@ import '../../../data/models/user.dart';
 import '../../../services/profile_service.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/api_client.dart';
-import '../../auth/login_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -37,11 +36,7 @@ class _ProfileTabState extends State<ProfileTab> {
       // ignore, we clear token regardless
     }
     if (!mounted) return;
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-      (_) => false,
-    );
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
   }
 
   @override
