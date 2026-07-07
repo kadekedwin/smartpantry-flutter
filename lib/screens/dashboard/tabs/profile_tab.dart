@@ -48,12 +48,14 @@ class _ProfileTabState extends State<ProfileTab> {
         builder: (context, snapshot) {
           return Column(
             children: [
-              _buildHeader(snapshot),
+              _buildHeader(context),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
                   child: Column(
                     children: [
+                      _buildProfileInfo(snapshot),
+                      const SizedBox(height: 24),
                       _buildEditButton(),
                       const SizedBox(height: 24),
                       _buildMenuSection(),
@@ -70,19 +72,8 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Widget _buildHeader(AsyncSnapshot<User> snapshot) {
-    String name = '...';
-    String email = '...';
-    if (snapshot.connectionState == ConnectionState.done) {
-      if (snapshot.hasError) {
-        final err = snapshot.error;
-        name = 'Gagal memuat';
-        email = err is ApiException ? err.message : 'Tidak terhubung';
-      } else if (snapshot.hasData) {
-        name = snapshot.data!.name;
-        email = snapshot.data!.email;
-      }
-    }
+  Widget _buildHeader(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -136,58 +127,24 @@ class _ProfileTabState extends State<ProfileTab> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 60, 24, 32),
-              child: Column(
+              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'My Profile',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.6),
-                        width: 3,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.15),
-                          blurRadius: 16,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/profile.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
                   Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 20,
+                    'My Profile',
+                    style: TextStyle(
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 6),
                   Text(
-                    email,
+                    'Kelola akun Anda',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white.withValues(alpha: 0.8),
+                      fontSize: 15,
+                      color: Color(0xFFE5E7EB),
                     ),
                   ),
                 ],
@@ -195,6 +152,67 @@ class _ProfileTabState extends State<ProfileTab> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildProfileInfo(AsyncSnapshot<User> snapshot) {
+    String name = '...';
+    String email = '...';
+    if (snapshot.connectionState == ConnectionState.done) {
+      if (snapshot.hasError) {
+        final err = snapshot.error;
+        name = 'Gagal memuat';
+        email = err is ApiException ? err.message : 'Tidak terhubung';
+      } else if (snapshot.hasData) {
+        name = snapshot.data!.name;
+        email = snapshot.data!.email;
+      }
+    }
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _border, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 90,
+            height: 90,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: _green, width: 3),
+              image: const DecorationImage(
+                image: AssetImage('assets/images/profile.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: _foreground,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            email,
+            style: const TextStyle(fontSize: 13, color: _muted),
+          ),
+        ],
       ),
     );
   }
