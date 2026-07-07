@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../data/models/inventory_item.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
+import '../widgets/tab_header.dart';
 
 class InventoryTab extends StatefulWidget {
   const InventoryTab({super.key});
@@ -61,7 +62,7 @@ class _InventoryTabState extends State<InventoryTab> {
 
           return Column(
             children: [
-              _buildHeader(context),
+              const TabHeader(title: 'Inventory', subtitle: 'Stok saya'),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                 child: Row(
@@ -301,87 +302,4 @@ class _InventoryTabState extends State<InventoryTab> {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xFF0F9F68),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              right: -50,
-              top: -30,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.08),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 70,
-              top: 20,
-              child: Container(
-                width: 110,
-                height: 110,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
-              ),
-            ),
-            Positioned(
-              left: -20,
-              bottom: -40,
-              child: Container(
-                width: 130,
-                height: 130,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Inventory',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Stok saya',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xFFE5E7EB),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

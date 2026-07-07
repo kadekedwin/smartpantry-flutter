@@ -21,7 +21,10 @@ class AddTab extends StatelessWidget {
         backgroundColor: _bg,
         body: Column(
           children: [
-            _buildHeader(context),
+            const TabHeader(
+              title: 'Tambah Belanjaan',
+              subtitle: 'Catat apa yang perlu dibeli',
+            ),
             Container(
               color: Colors.white,
               child: const TabBar(
@@ -37,94 +40,7 @@ class AddTab extends StatelessWidget {
             ),
             const Expanded(
               child: TabBarView(
-                children: [
-                  _ShoppingListView(),
-                  _DirectInputView(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: _green,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              right: -50,
-              top: -30,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.08),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 70,
-              top: 20,
-              child: Container(
-                width: 110,
-                height: 110,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
-              ),
-            ),
-            Positioned(
-              left: -20,
-              bottom: -40,
-              child: Container(
-                width: 130,
-                height: 130,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(24, statusBarHeight + 20, 24, 28),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Tambah Belanjaan',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Catat apa yang perlu dibeli',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xFFE5E7EB),
-                    ),
-                  ),
-                ],
+                children: [_ShoppingListView(), _DirectInputView()],
               ),
             ),
           ],
@@ -188,9 +104,9 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memindahkan: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Gagal memindahkan: $e')));
     }
   }
 
@@ -225,7 +141,9 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
                   Text(msg),
                   const SizedBox(height: 12),
                   TextButton(
-                      onPressed: _reload, child: const Text('Coba lagi')),
+                    onPressed: _reload,
+                    child: const Text('Coba lagi'),
+                  ),
                 ],
               ),
             );
@@ -266,9 +184,7 @@ class _ShoppingListViewState extends State<_ShoppingListView> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  ...bought.map(
-                    (item) => ShoppingListItem(item: item),
-                  ),
+                  ...bought.map((item) => ShoppingListItem(item: item)),
                 ],
               ],
             ),
@@ -319,8 +235,9 @@ class _AddShoppingSheetState extends State<_AddShoppingSheet> {
       Navigator.pop(context, true);
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message)));
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -463,15 +380,15 @@ class _DirectInputViewState extends State<_DirectInputView> {
   Future<void> _submit() async {
     if (_loading) return;
     if (_nameController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nama tidak boleh kosong')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Nama tidak boleh kosong')));
       return;
     }
     if (_imageFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Foto barang wajib diisi')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Foto barang wajib diisi')));
       return;
     }
     setState(() => _loading = true);
@@ -497,8 +414,9 @@ class _DirectInputViewState extends State<_DirectInputView> {
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message)));
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -518,10 +436,7 @@ class _DirectInputViewState extends State<_DirectInputView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ImagePickerTile(
-            file: _imageFile,
-            onTap: _pickImage,
-          ),
+          _ImagePickerTile(file: _imageFile, onTap: _pickImage),
           const SizedBox(height: 12),
           TextField(
             controller: _nameController,
@@ -658,20 +573,25 @@ class _ImagePickerTile extends StatelessWidget {
             ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.photo_camera_rounded,
-                      size: 36, color: Color(0xFF0F9F68)),
+                  Icon(
+                    Icons.photo_camera_rounded,
+                    size: 36,
+                    color: Color(0xFF0F9F68),
+                  ),
                   SizedBox(height: 8),
                   Text(
                     'Tambahkan foto barang',
                     style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF0F9F68),
-                        fontWeight: FontWeight.w600),
+                      fontSize: 13,
+                      color: Color(0xFF0F9F68),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   SizedBox(height: 2),
-                  Text('Kamera / Galeri',
-                      style:
-                          TextStyle(fontSize: 11, color: Color(0xFF6B7280))),
+                  Text(
+                    'Kamera / Galeri',
+                    style: TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
+                  ),
                 ],
               )
             : Stack(
@@ -683,7 +603,9 @@ class _ImagePickerTile extends StatelessWidget {
                     right: 8,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black.withValues(alpha: 0.55),
                         borderRadius: BorderRadius.circular(20),
@@ -691,12 +613,16 @@ class _ImagePickerTile extends StatelessWidget {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.edit_rounded,
-                              size: 14, color: Colors.white),
+                          Icon(
+                            Icons.edit_rounded,
+                            size: 14,
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 4),
-                          Text('Ganti',
-                              style: TextStyle(
-                                  fontSize: 11, color: Colors.white)),
+                          Text(
+                            'Ganti',
+                            style: TextStyle(fontSize: 11, color: Colors.white),
+                          ),
                         ],
                       ),
                     ),
@@ -760,9 +686,9 @@ class _MoveToInventorySheetState extends State<_MoveToInventorySheet> {
 
   void _submit() {
     if (_imageFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Foto barang wajib diisi')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Foto barang wajib diisi')));
       return;
     }
     Navigator.pop(
