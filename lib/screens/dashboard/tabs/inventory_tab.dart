@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/search.dart';
-import '../widgets/header.dart';
 import '../../../data/models/inventory_item.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
@@ -65,19 +64,19 @@ class _InventoryTabState extends State<InventoryTab> {
 
           return Column(
             children: [
-              HeaderInventoryView(
+              _InventoryHeader(
                 title: 'Inventory',
                 subtitle: 'Stok saya',
                 stats: [
-                  HeaderStat(
+                  _HeaderStat(
                     label: 'Kulkas',
                     value: '${_countByCategory(items, 'kulkas')}',
                   ),
-                  HeaderStat(
+                  _HeaderStat(
                     label: 'Freezer',
                     value: '${_countByCategory(items, 'freezer')}',
                   ),
-                  HeaderStat(
+                  _HeaderStat(
                     label: 'Rak Dapur',
                     value: '${_countByCategory(items, 'rak_dapur')}',
                   ),
@@ -315,6 +314,149 @@ class _InventoryTabState extends State<InventoryTab> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _HeaderStat {
+  final String label;
+  final String value;
+  const _HeaderStat({required this.label, required this.value});
+}
+
+class _InventoryHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final List<_HeaderStat> stats;
+
+  const _InventoryHeader({
+    required this.title,
+    required this.subtitle,
+    this.stats = const [],
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Color(0xFF0F9F68),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -50,
+              top: -30,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 70,
+              top: 20,
+              child: Container(
+                width: 110,
+                height: 110,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
+              ),
+            ),
+            Positioned(
+              left: -20,
+              bottom: -40,
+              child: Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.05),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 60, 24, 28),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFFE5E7EB),
+                    ),
+                  ),
+                  if (stats.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    Row(
+                      children: stats.map(_buildStatChip).toList(),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatChip(_HeaderStat stat) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            stat.value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            stat.label,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 11,
+            ),
+          ),
+        ],
       ),
     );
   }
