@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smartpantry/screens/dashboard/widgets/tab_header.dart';
+import 'package:smartpantry/screens/components/tab_header.dart';
 import '../../../data/models/shopping_item.dart';
 import '../../../services/shopping_service.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
-import '../../../components/shopping_list_item.dart';
+import 'package:smartpantry/screens/components/shopping_list_item.dart';
 
 class AddTab extends StatelessWidget {
   const AddTab({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartpantry/screens/dashboard/widgets/tab_header.dart';
+import 'package:smartpantry/screens/components/tab_header.dart';
 import '../../../data/models/inventory_item.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/api_client.dart';
