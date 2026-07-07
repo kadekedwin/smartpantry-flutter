@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_client.dart';
+import '../components/auth/auth_input_decoration.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,6 +19,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
   bool _loading = false;
+
+  static const _primary = Color(0xFF059669);
+  static const _muted = Color(0xFF9CA3AF);
+  static const _foreground = Color(0xFF1F2937);
 
   Future<void> _submit() async {
     if (_loading) return;
@@ -57,10 +62,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  static const _primary = Color(0xFF059669);
-  static const _muted = Color(0xFF9CA3AF);
-  static const _foreground = Color(0xFF1F2937);
-
   @override
   void dispose() {
     _usernameController.dispose();
@@ -68,38 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
-  }
-
-  InputDecoration _inputDecoration({
-    required String hint,
-    required IconData icon,
-    Widget? suffix,
-  }) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: const TextStyle(
-        color: _muted,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-      ),
-      prefixIcon: Icon(icon, color: _muted, size: 20),
-      suffixIcon: suffix,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _muted, width: 0.5),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _muted, width: 0.5),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _muted, width: 2),
-      ),
-    );
   }
 
   @override
@@ -157,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 28),
                       TextFormField(
                         controller: _usernameController,
-                        decoration: _inputDecoration(
+                        decoration: authInputDecoration(
                           hint: 'Masukkan username',
                           icon: Icons.person_outline,
                         ),
@@ -166,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: _inputDecoration(
+                        decoration: authInputDecoration(
                           hint: 'Masukkan email anda',
                           icon: Icons.mail_outline,
                         ),
@@ -175,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        decoration: _inputDecoration(
+                        decoration: authInputDecoration(
                           hint: 'Masukan password anda',
                           icon: Icons.lock_outline,
                           suffix: IconButton(
@@ -195,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextFormField(
                         controller: _confirmPasswordController,
                         obscureText: _obscureConfirm,
-                        decoration: _inputDecoration(
+                        decoration: authInputDecoration(
                           hint: 'Konfirmasi password anda',
                           icon: Icons.lock_outline,
                           suffix: IconButton(

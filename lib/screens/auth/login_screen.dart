@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_client.dart';
+import '../components/auth/auth_input_decoration.dart';
+import '../components/auth/auth_social_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _loading = false;
+
+  static const _primary = Color(0xFF059669);
+  static const _muted = Color(0xFF9CA3AF);
+  static const _foreground = Color(0xFF1F2937);
 
   Future<void> _submit() async {
     if (_loading) return;
@@ -45,47 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  static const _primary = Color(0xFF059669);
-  static const _muted = Color(0xFF9CA3AF);
-  static const _foreground = Color(0xFF1F2937);
-
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
-  }
-
-  InputDecoration _inputDecoration({
-    required String hint,
-    required IconData icon,
-    Widget? suffix,
-  }) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: const TextStyle(
-        color: _muted,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-      ),
-      prefixIcon: Icon(icon, color: _muted, size: 20),
-      suffixIcon: suffix,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _muted, width: 0.5),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _muted, width: 0.5),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: _muted, width: 2),
-      ),
-    );
   }
 
   @override
@@ -135,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: _inputDecoration(
+                  decoration: authInputDecoration(
                     hint: 'Masukkan email anda',
                     icon: Icons.mail_outline,
                   ),
@@ -144,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
-                  decoration: _inputDecoration(
+                  decoration: authInputDecoration(
                     hint: 'Masukan password anda',
                     icon: Icons.lock_outline,
                     suffix: IconButton(
@@ -226,14 +195,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                _SocialButton(
+                AuthSocialButton(
                   icon: 'assets/icons/google.png',
                   label: 'Masuk dengan Google',
                   hasBorder: true,
                   onTap: () {},
                 ),
                 const SizedBox(height: 12),
-                _SocialButton(
+                AuthSocialButton(
                   icon: 'assets/icons/apple.svg',
                   label: 'Masuk dengan Apple',
                   hasBorder: false,
@@ -249,8 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: _muted, fontSize: 14),
                     ),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/register'),
+                      onTap: () => Navigator.pushNamed(context, '/register'),
                       child: const Text(
                         'Daftar',
                         style: TextStyle(
@@ -266,74 +234,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SocialButton extends StatelessWidget {
-  final String icon;
-  final String label;
-  final bool hasBorder;
-  final bool isSvg;
-  final VoidCallback onTap;
-
-  const _SocialButton({
-    required this.icon,
-    required this.label,
-    required this.hasBorder,
-    required this.onTap,
-    this.isSvg = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: hasBorder
-              ? Border.all(color: const Color(0xFF9CA3AF), width: 1)
-              : null,
-          boxShadow: hasBorder
-              ? null
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.06),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            isSvg
-                ? SvgPicture.asset(
-                    icon,
-                    width: 24,
-                    height: 24,
-                    colorFilter: const ColorFilter.mode(
-                      Colors.black,
-                      BlendMode.srcIn,
-                    ),
-                  )
-                : Image.asset(icon, width: 24, height: 24),
-            const SizedBox(width: 10),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Color(0xFF1F2937),
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
         ),
       ),
     );

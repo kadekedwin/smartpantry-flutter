@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smartpantry/screens/components/tab_header.dart';
-import '../../../../data/models/notification_item.dart';
-import '../../../../services/notification_service.dart';
-import '../../../../services/api_client.dart';
-import 'package:smartpantry/screens/components/notification_card.dart';
+import '../../data/models/notification_item.dart';
+import '../../services/api_client.dart';
+import '../../services/notification_service.dart';
+import '../components/tab_header.dart';
+import '../components/tabs/notification_list.dart';
 
 class NotificationTab extends StatefulWidget {
   const NotificationTab({super.key});
@@ -13,8 +13,6 @@ class NotificationTab extends StatefulWidget {
 }
 
 class _NotificationTabState extends State<NotificationTab> {
-  static const _bg = Color(0xFFF9FAFB);
-
   late Future<List<NotificationItem>> _future;
 
   @override
@@ -32,7 +30,7 @@ class _NotificationTabState extends State<NotificationTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: const Color(0xFFF9FAFB),
       body: Column(
         children: [
           const TabHeader(
@@ -69,12 +67,9 @@ class _NotificationTabState extends State<NotificationTab> {
                 if (items.isEmpty) {
                   return const Center(child: Text('Belum ada notifikasi'));
                 }
-                return RefreshIndicator(
+                return NotificationList(
+                  items: items,
                   onRefresh: () async => _reload(),
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-                    children: _buildNotificationList(items),
-                  ),
                 );
               },
             ),
@@ -82,33 +77,5 @@ class _NotificationTabState extends State<NotificationTab> {
         ],
       ),
     );
-  }
-
-  List<Widget> _buildNotificationList(List<NotificationItem> items) {
-    final List<Widget> widgets = [];
-    String currentGroup = '';
-
-    for (final item in items) {
-      if (item.group != currentGroup) {
-        currentGroup = item.group;
-        widgets.add(
-          Padding(
-            padding: EdgeInsets.only(bottom: 10, top: widgets.isEmpty ? 0 : 16),
-            child: Text(
-              currentGroup,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF9CA3AF),
-                letterSpacing: 0.5,
-              ),
-            ),
-          ),
-        );
-      }
-      widgets.add(NotificationCard(item: item));
-    }
-
-    return widgets;
   }
 }
