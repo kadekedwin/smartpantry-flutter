@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../tabs/home_tab.dart';
-import '../tabs/inventory_tab.dart';
-import '../tabs/add_tab.dart';
-import '../tabs/notification_tab.dart';
-import '../tabs/profile_tab.dart';
+import 'tabs/home_tab.dart';
+import 'tabs/inventory_tab.dart';
+import 'tabs/add_tab.dart';
+import 'tabs/notification_tab.dart';
+import 'tabs/profile_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -36,26 +36,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: _screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.inventory_2),
             label: 'Inventory',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: 'Add',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'Add'),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifikasi',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,

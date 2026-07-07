@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/user.dart';
-import '../../../services/profile_service.dart';
+import '../../../../data/models/user.dart';
+import '../../../../services/profile_service.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -21,9 +21,7 @@ class _HomeTabState extends State<HomeTab> {
       backgroundColor: _bg,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(context),
-        ],
+        children: [_buildHeader(context)],
       ),
     );
   }

@@ -4,11 +4,11 @@ import 'screens/onboarding/onboarding_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/main_navigation_screen.dart';
-import 'tabs/home_tab.dart';
-import 'tabs/inventory_tab.dart';
-import 'tabs/add_tab.dart';
-import 'tabs/notification_tab.dart';
-import 'tabs/profile_tab.dart';
+import 'screens/tabs/home_tab.dart';
+import 'screens/tabs/inventory_tab.dart';
+import 'screens/tabs/add_tab.dart';
+import 'screens/tabs/notification_tab.dart';
+import 'screens/tabs/profile_tab.dart';
 import 'services/token_storage.dart';
 
 Future<void> main() async {

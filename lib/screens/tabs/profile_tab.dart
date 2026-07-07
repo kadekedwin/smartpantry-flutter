@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smartpantry/screens/components/tab_header.dart';
-import '../../../data/models/user.dart';
-import '../../../services/profile_service.dart';
-import '../../../services/auth_service.dart';
-import '../../../services/api_client.dart';
+import '../../../../data/models/user.dart';
+import '../../../../services/profile_service.dart';
+import '../../../../services/auth_service.dart';
+import '../../../../services/api_client.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
