@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../services/api_client.dart';
 import '../components/auth/auth_input_decoration.dart';
-import '../components/auth/auth_social_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -175,39 +174,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                   ),
-                ),
-                const SizedBox(height: 28),
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Divider(color: Color(0xFFE5E7EB), thickness: 1),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        'atau',
-                        style: TextStyle(color: _muted, fontSize: 13),
-                      ),
-                    ),
-                    const Expanded(
-                      child: Divider(color: Color(0xFFE5E7EB), thickness: 1),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                AuthSocialButton(
-                  icon: 'assets/icons/google.png',
-                  label: 'Masuk dengan Google',
-                  hasBorder: true,
-                  onTap: () {},
-                ),
-                const SizedBox(height: 12),
-                AuthSocialButton(
-                  icon: 'assets/icons/apple.svg',
-                  label: 'Masuk dengan Apple',
-                  hasBorder: false,
-                  isSvg: true,
-                  onTap: () {},
                 ),
                 const SizedBox(height: 36),
                 Row(
