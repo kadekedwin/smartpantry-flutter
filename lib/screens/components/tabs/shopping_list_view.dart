@@ -3,7 +3,7 @@ import '../../../models/shopping_item.dart';
 import '../../../services/api_client.dart';
 import '../../../services/inventory_service.dart';
 import '../../../services/shopping_service.dart';
-import '../shopping_list_item.dart';
+import 'shopping_list_item.dart';
 import 'add_shopping_sheet.dart';
 import 'move_to_inventory_sheet.dart';
 
