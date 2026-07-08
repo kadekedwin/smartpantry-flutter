@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../data/models/shopping_item.dart';
+import '../../../models/shopping_item.dart';
 import 'image_picker_tile.dart';
 import 'image_source_sheet.dart';
 

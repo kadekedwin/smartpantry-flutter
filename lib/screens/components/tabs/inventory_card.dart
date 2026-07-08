@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/inventory_item.dart';
+import '../../../models/inventory_item.dart';
 import 'expiry_color.dart';
 
 class InventoryCard extends StatelessWidget {

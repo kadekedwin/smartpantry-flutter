@@ -1,4 +1,4 @@
-import '../data/models/user.dart';
+import '../models/user.dart';
 import 'api_client.dart';
 import 'token_storage.dart';
 

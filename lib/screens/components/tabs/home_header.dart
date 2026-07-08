@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/user.dart';
+import '../../../models/user.dart';
 
 class HomeHeader extends StatelessWidget {
   final Future<User> userFuture;

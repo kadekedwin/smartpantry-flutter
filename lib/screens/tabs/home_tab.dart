@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/models/user.dart';
+import '../../models/user.dart';
 import '../../services/profile_service.dart';
 import '../components/tabs/home_header.dart';
 

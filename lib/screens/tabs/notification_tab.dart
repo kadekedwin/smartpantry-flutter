@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/models/notification_item.dart';
+import '../../models/notification_item.dart';
 import '../../services/api_client.dart';
 import '../../services/notification_service.dart';
 import '../components/tab_header.dart';

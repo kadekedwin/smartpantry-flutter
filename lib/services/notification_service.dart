@@ -1,4 +1,4 @@
-import '../data/models/notification_item.dart';
+import '../models/notification_item.dart';
 import 'api_client.dart';
 
 class NotificationService {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/inventory_item.dart';
+import '../../../models/inventory_item.dart';
 import '../../../services/api_client.dart';
 import 'inventory_card.dart';
 

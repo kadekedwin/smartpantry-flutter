@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../data/models/inventory_item.dart';
+import '../models/inventory_item.dart';
 import 'api_client.dart';
 
 class InventoryService {

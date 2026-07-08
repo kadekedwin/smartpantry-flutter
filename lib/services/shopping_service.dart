@@ -1,4 +1,4 @@
-import '../data/models/shopping_item.dart';
+import '../models/shopping_item.dart';
 import 'api_client.dart';
 
 class ShoppingService {
