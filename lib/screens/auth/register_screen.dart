@@ -26,15 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
-    if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password tidak sama'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
     try {
       await AuthService.register(
@@ -130,6 +122,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hint: 'Masukkan username',
                           icon: Icons.person_outline,
                         ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Username tidak boleh kosong';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
@@ -139,6 +137,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hint: 'Masukkan email anda',
                           icon: Icons.mail_outline,
                         ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Email tidak boleh kosong';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Format email tidak valid';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
@@ -159,6 +166,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 () => _obscurePassword = !_obscurePassword),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password tidak boleh kosong';
+                          }
+                          if (value.length < 6) {
+                            return 'Password minimal 6 karakter';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
@@ -179,6 +195,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 () => _obscureConfirm = !_obscureConfirm),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Konfirmasi password tidak boleh kosong';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'Password tidak sama';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 32),
                       SizedBox(
