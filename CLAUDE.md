@@ -48,7 +48,7 @@ Home tab still renders hardcoded content (carousel, quick actions, expiring sect
 
 ### Data layer
 
-Data classes live in `lib/data/models/`. Each has a `fromJson` factory matching the API contract:
+Data classes live in `lib/models/`. Each has a `fromJson` factory matching the API contract:
 
 - `inventory_item.dart` — `InventoryItem` with `expiredAt` (`DateTime`) and a computed `expiredInfo` getter that returns Indonesian relative-time strings ("3 Hari Lagi", "6 Bulan Lagi"). Category is `'kulkas'` | `'freezer'` | `'rak_dapur'`.
 - `notification_item.dart` — `NotificationItem` with `NotificationType` enum (`cooking`, `stock`, `warning`, `expired`); `group` and `time` getters derive display strings from `createdAt`.
